@@ -3,7 +3,6 @@
 // Padmina91 (GitHub)
 //
 
-#include <iostream>
 
 int main() {
 
