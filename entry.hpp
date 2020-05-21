@@ -6,16 +6,22 @@
 #ifndef ROUTENPLANUNG_CPP_ENTRY_HPP
 #define ROUTENPLANUNG_CPP_ENTRY_HPP
 
+#include <iostream>
+
+#define DEBUG false
+
 template <typename T>
 class Entry {
 private:
     T _element;
     float _priority;
-    
+
 public:
-    explicit Entry() : _element(), _priority() {};
+    explicit Entry();
     
-    explicit Entry(T& element, float priority) : _element(element), _priority(priority) {}
+    explicit Entry(T& element, float priority);
+    
+    ~Entry();
     
     T get_element();
     
@@ -25,6 +31,27 @@ public:
     
     void set_priority(float);
 };
+
+template <typename T>
+Entry<T>::Entry() : _element(), _priority() {
+    if (DEBUG) {
+        std::cout << "Konstruktor von Entry ohne Parameter laeuft..." << std::endl;
+    }
+}
+
+template <typename T>
+Entry<T>::Entry(T& element, float priority) : _element(element), _priority(priority) {
+    if (DEBUG) {
+        std::cout << "Konstruktor von Entry mit Parameter laeuft..." << std::endl;
+    }
+}
+
+template <typename T>
+Entry<T>::~Entry() {
+    if (DEBUG) {
+        std::cout << "Destruktor von Entry laeuft..." << std::endl;
+    }
+}
 
 template <typename T>
 T Entry<T>::get_element() {

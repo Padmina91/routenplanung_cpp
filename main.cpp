@@ -3,9 +3,10 @@
 // Padmina91 (GitHub)
 //
 
+#include "queue.hpp"
 
 int main() {
-
+    Queue<int> test_queue(4, 7.9);
 }
 
 
