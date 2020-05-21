@@ -23,6 +23,8 @@ public:
     
     ~Entry();
     
+    Entry<T>& operator=(Entry<T>);
+    
     T get_element();
     
     float get_priority();
@@ -51,6 +53,13 @@ Entry<T>::~Entry() {
     if (DEBUG) {
         std::cout << "Destruktor von Entry laeuft..." << std::endl;
     }
+}
+
+template <typename T>
+Entry<T>& Entry<T>::operator=(Entry<T>) {
+    Entry<T> temp = new Entry<T>(this->_element, this->_priority);
+    return temp;
+    //TODO: ????
 }
 
 template <typename T>
