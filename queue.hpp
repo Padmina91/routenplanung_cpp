@@ -6,6 +6,9 @@
 #ifndef ROUTENPLANUNG_CPP_QUEUE_HPP
 #define ROUTENPLANUNG_CPP_QUEUE_HPP
 
+#include "entry.hpp"
+#include "exception.hpp"
+
 
 
 
