@@ -1,0 +1,8 @@
+//
+// Created by Schne on 21.05.2020.
+//
+
+#ifndef ROUTENPLANUNG_CPP_ENTRY_HPP
+#define ROUTENPLANUNG_CPP_ENTRY_HPP
+
+#endif //ROUTENPLANUNG_CPP_ENTRY_HPP
