@@ -8,78 +8,63 @@
 
 #include <iostream>
 
-#define DEBUG false
+#define DEBUG true
 
 template <typename T>
 class Entry {
 private:
-    T _element;
+    T _value;
     float _priority;
 
 public:
     explicit Entry();
     
-    explicit Entry(T& element, float priority);
+    //explicit Entry(T& val, float prio);
     
-    ~Entry();
+    T get_value() const;
     
-    Entry<T>& operator=(Entry<T>);
+    float get_priority() const;
     
-    T get_element();
-    
-    float get_priority();
-    
-    void set_element(T);
+    void set_value(T);
     
     void set_priority(float);
+    
+    Entry<T>& operator=(const Entry<T>& original);
 };
 
 template <typename T>
-Entry<T>::Entry() : _element(), _priority() {
-    if (DEBUG) {
-        std::cout << "Konstruktor von Entry ohne Parameter laeuft..." << std::endl;
-    }
+Entry<T>::Entry() : _value(), _priority() {}
+
+//template <typename T>
+//Entry<T>::Entry(T& val, float prio) : _value(val), _priority(prio) {}
+
+
+template <typename T>
+T Entry<T>::get_value() const {
+    return _value;
 }
 
 template <typename T>
-Entry<T>::Entry(T& element, float priority) : _element(element), _priority(priority) {
-    if (DEBUG) {
-        std::cout << "Konstruktor von Entry mit Parameter laeuft..." << std::endl;
-    }
-}
-
-template <typename T>
-Entry<T>::~Entry() {
-    if (DEBUG) {
-        std::cout << "Destruktor von Entry laeuft..." << std::endl;
-    }
-}
-
-template <typename T>
-Entry<T>& Entry<T>::operator=(Entry<T>) {
-    Entry<T> temp = new Entry<T>(this->_element, this->_priority);
-    return temp;
-    //TODO: ????
-}
-
-template <typename T>
-T Entry<T>::get_element() {
-    return _element;
-}
-
-template <typename T>
-float Entry<T>::get_priority() {
+float Entry<T>::get_priority() const {
     return _priority;
 }
 
 template <typename T>
-void Entry<T>::set_element(T element) {
-    _element = element;
+void Entry<T>::set_value(T element) {
+    _value = element;
 }
 
 template <typename T>
 void Entry<T>::set_priority(float prio) {
     _priority = prio;
+}
+
+template <typename T>
+Entry<T>& Entry<T>::operator=(const Entry<T>& original) {
+    //std::cout << "operator=() wird ausgefuehrt...\n";
+    _priority = original.get_priority();
+    _value = original.get_value();
+    return *this;
 }
 
 #endif //ROUTENPLANUNG_CPP_ENTRY_HPP

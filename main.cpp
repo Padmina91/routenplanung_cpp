@@ -6,7 +6,12 @@
 #include "queue.hpp"
 
 int main() {
-    Queue<int> test_queue(4, 7.9);
+    Queue<int> test_queue;
+    test_queue.insert(5, 6.0);
+    test_queue.insert(1, 1.0);
+    test_queue.change_priority(1, 4.0);
+    //test_queue.swap_entries(0,1);
+    //int min = test_queue.extract_min();
 }
 
 
