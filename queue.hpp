@@ -12,9 +12,6 @@
 template <typename T>
 class Queue {
 private:
-// ----------------------------------------- friend functions -----------------------------------------
-    template <typename N>
-    friend std::ostream& operator<<(std::ostream&, const Queue<N>&);
 // ---------------------------------------- private attributes ----------------------------------------
     Entry<T> *_entries;
     int _size;
@@ -52,8 +49,13 @@ public:
     explicit Queue();
     
     ~Queue();
-// ------------------------------------- public non-const methods -------------------------------------
     
+// ---------------------------------------- getters & setters -----------------------------------------
+    int get_next() const;
+    
+    Entry<T> get_entry_at(int index) const;
+// ------------------------------------- public non-const methods -------------------------------------
+
     void insert(T val, float prio);
     
     void change_priority(T val, float prio);
@@ -65,8 +67,8 @@ public:
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Queue<T>& queue) {
-    for (int i = 0; i < queue._next; i++) {
-        os << "Element at " << i << ": " << queue._entries[i].get_value() << ", priority: " << queue._entries[i].get_priority() << std::endl;
+    for (int i = 0; i < queue.get_next(); i++) {
+        os << "Element at " << i << ": " << queue.get_entry_at(i).get_value() << ", priority: " << queue.get_entry_at(i).get_priority() << std::endl;
     }
     return os;
 }
@@ -231,6 +233,18 @@ Queue<T>::Queue() {
 template <typename T>
 Queue<T>::~Queue() {
     delete[] _entries;
+}
+
+// ---------------------------------------- getters & setters -----------------------------------------
+
+template <typename T>
+int Queue<T>::get_next() const {
+    return _next;
+}
+
+template <typename T>
+Entry<T> Queue<T>::get_entry_at(int index) const {
+    return _entries[index];
 }
 
 // ------------------------------------- public non-const methods -------------------------------------
