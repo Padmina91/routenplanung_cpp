@@ -12,6 +12,9 @@
 template <typename T>
 class Queue {
 private:
+// ----------------------------------------- friend functions -----------------------------------------
+    template <typename N>
+    friend std::ostream& operator<<(std::ostream&, const Queue<N>&);
 // ---------------------------------------- private attributes ----------------------------------------
     Entry<T> *_entries;
     int _size;
@@ -59,6 +62,14 @@ public:
     
     T extract_min();
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Queue<T>& queue) {
+    for (int i = 0; i < queue._next; i++) {
+        os << "Element at " << i << ": " << queue._entries[i].get_value() << ", priority: " << queue._entries[i].get_priority() << std::endl;
+    }
+    return os;
+}
 
 // -------------------------------------- private const methods ---------------------------------------
 
