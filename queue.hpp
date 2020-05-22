@@ -23,11 +23,19 @@ private:
 // ------------------------------------ private non-const methods -------------------------------------
     void increase_capacity();
     
-    void remove_entry_at(int index);
+    void decrease_capacity();
     
     void swap_entries(int x, int y);
     
+    void remove_entry_at(int index);
+    
     int search_value(T val, int start_index);
+    
+    void assert_min_heap_bottom_up(int start_index);
+    
+    void assert_min_heap_top_down(int start_index);
+    
+    void assert_min_heap (int index);
 
 // -------------------------------------- private static methods --------------------------------------
     static int index_of_parent(int start_index);
@@ -47,6 +55,8 @@ public:
     
     void change_priority(T val, float prio);
     
+    void remove(T val);
+    
     T extract_min();
 };
 
@@ -61,7 +71,7 @@ bool Queue<T>::is_empty() const {
 
 template <typename T>
 void Queue<T>::increase_capacity() {
-    _size *= 2; //TODO: maybe don't just double it?
+    _size *= 2;
     auto *temp = new Entry<T>[_size];
     for (int i = 0; i < _next; i++) {
         temp[i] = _entries[i];
@@ -71,10 +81,16 @@ void Queue<T>::increase_capacity() {
 }
 
 template <typename T>
-void Queue<T>::remove_entry_at(int index) {
-    _next--;
-    swap_entries(index, _next);
-    //TODO: assert_min_heap_top_down
+void Queue<T>::decrease_capacity() {
+    if (_next < _size/2) {
+        _size /= 2;
+        auto *temp = new Entry<T>[_size];
+        for (int i = 0; i < _next; i++) {
+            temp[i] = _entries[i];
+        }
+        delete[] _entries;
+        _entries = temp;
+    }
 }
 
 template <typename T>
@@ -82,6 +98,16 @@ void Queue<T>::swap_entries(int x, int y) {
     Entry<T> temp = _entries[x];
     _entries[x] = _entries[y];
     _entries[y] = temp;
+}
+
+template <typename T>
+void Queue<T>::remove_entry_at(int index) {
+    _next--;
+    swap_entries(index, _next);
+    assert_min_heap(index);
+    if (_next < _size/3) {
+        decrease_capacity();
+    }
 }
 
 template <typename T>
@@ -102,6 +128,64 @@ int Queue<T>::search_value(T val, int start_index) {
     }
     return found_index;
 }
+
+
+template <typename T>
+void Queue<T>::assert_min_heap_bottom_up(int start_index) {
+    int parent_index = index_of_parent(start_index);
+    int left_child_index = index_of_left_child(start_index);
+    int right_child_index = index_of_right_child(start_index);
+    bool left_child_exists = _next > left_child_index;
+    bool right_child_exists = _next > right_child_index;
+    bool parent_exists = parent_index != -1;
+    if (left_child_exists) {
+        assert_min_heap_bottom_up(left_child_index);
+    }
+    if (right_child_exists) {
+        assert_min_heap_bottom_up(right_child_index);
+    }
+    if (parent_exists && _entries[start_index].get_priority() < _entries[parent_index].get_priority()) {
+        swap_entries(start_index, parent_index);
+    }
+}
+
+template <typename T>
+void Queue<T>::assert_min_heap_top_down(int start_index) {
+    int left_child_index = index_of_left_child(start_index);
+    int right_child_index = index_of_right_child(start_index);
+    bool left_child_exists = _next > left_child_index;
+    bool right_child_exists = _next > right_child_index;
+    if (left_child_exists && right_child_exists) {
+        if (_entries[left_child_index].get_priority() < _entries[right_child_index].get_priority()) {
+            if (_entries[left_child_index].get_priority() < _entries[start_index].get_priority()) {
+                swap_entries(start_index, left_child_index);
+                assert_min_heap_top_down(left_child_index);
+            }
+        } else if (_entries[right_child_index].get_priority() < _entries[start_index].get_priority()) {
+            swap_entries(start_index, right_child_index);
+            assert_min_heap_top_down(right_child_index);
+        }
+    } else if (left_child_exists && _entries[left_child_index].get_priority() < _entries[start_index].get_priority()) {
+        swap_entries(start_index, left_child_index);
+    }
+}
+
+template <typename T>
+void Queue<T>::assert_min_heap (int index) {
+    int parent_index = index_of_parent(index);
+    int left_child_index = index_of_left_child(index);
+    int right_child_index = index_of_right_child(index);
+    bool left_child_exists = _next > left_child_index;
+    bool right_child_exists = _next > right_child_index;
+    bool parent_exists = parent_index != -1;
+    if (parent_exists && _entries[index].get_priority() < _entries[parent_index].get_priority()) {
+        assert_min_heap_bottom_up(0);
+    } else if ((left_child_exists && _entries[index].get_priority() > _entries[left_child_index].get_priority())
+               || (right_child_exists && _entries[index].get_priority() > _entries[right_child_index].get_priority())) {
+        assert_min_heap_top_down(0);
+    }
+}
+
 
 // -------------------------------------- private static methods --------------------------------------
 
@@ -128,9 +212,9 @@ int Queue<T>::index_of_right_child(int start_index) {
 
 template <typename T>
 Queue<T>::Queue() {
-    _size = 3;
+    _size = 100;
     _next = 0;
-    _entries = new Entry<T>[_size]; // reserving space for _size entries on construction
+    _entries = new Entry<T>[_size]; // reserving space for _size entries upon construction
 }
 
 template <typename T>
@@ -142,13 +226,15 @@ Queue<T>::~Queue() {
 
 template <typename T>
 void Queue<T>::insert(T val, float prio) {
-    if (_size == _next) {
-        increase_capacity();
+    if (prio > 0.0) {
+        if (_size == _next) {
+            increase_capacity();
+        }
+        _entries[_next].set_value(val);
+        _entries[_next].set_priority(prio);
+        assert_min_heap(_next);
+        _next++;
     }
-    _entries[_next].set_value(val);
-    _entries[_next].set_priority(prio);
-    _next++;
-    //TODO: assert_min_heap_...
 }
 
 template <typename T>
@@ -156,9 +242,20 @@ void Queue<T>::change_priority(T val, float prio) {
     int index = search_value(val, 0);
     if (index != -1) {
         _entries[index].set_priority(prio);
-        std::cout << "Priority successfully changed to " << _entries[index].get_priority() << std::endl;
+        //std::cout << "Priority successfully changed to " << _entries[index].get_priority() << std::endl;
+        assert_min_heap(index);
+    } else {
+        throw ValueNotFoundException();
     }
-    //TODO: Heap neu sortieren.
+}
+
+template <typename T>
+void Queue<T>::remove(T val) {
+    int index = search_value(val, 0);
+    if (index != -1) {
+        remove_entry_at(index);
+    }
+    throw ValueNotFoundException();
 }
 
 template <typename T>
@@ -166,9 +263,10 @@ T Queue<T>::extract_min() {
     T smallest_element;
     if (!is_empty()) {
         smallest_element = _entries[0].get_value();
+        remove_entry_at(0);
+        return smallest_element;
     }
-    remove_entry_at(0);
-    return smallest_element;
+    throw EmptyHeapException();
 }
 
 #endif //ROUTENPLANUNG_CPP_QUEUE_HPP
