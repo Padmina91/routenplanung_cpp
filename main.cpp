@@ -6,11 +6,13 @@
 #include "queue.hpp"
 
 int main() {
-    Queue<std::string> test_queue;
+    using q = Queue<std::string>;
+    using std::cout;
+    q test_queue;
     test_queue.insert("aaaa", 6.0);
     test_queue.insert("bbbb", 1.0);
     test_queue.change_priority("bbbb", 8.0);
-    std::cout << test_queue;
+    cout << "Test";
     //test_queue.swap_entries(0,1);
     //int min = test_queue.extract_min();
 }
