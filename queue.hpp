@@ -37,12 +37,6 @@ private:
     
     void assert_min_heap (int index);
 
-// -------------------------------------- private static methods --------------------------------------
-    static int index_of_parent(int start_index);
-    
-    static int index_of_left_child(int start_index);
-    
-    static int index_of_right_child(int start_index);
 
 public:
 // ------------------------------------ constructors & destructor -------------------------------------
@@ -54,8 +48,8 @@ public:
     int get_next() const;
     
     Entry<T> get_entry_at(int index) const;
-// ------------------------------------- public non-const methods -------------------------------------
 
+// ------------------------------------- public non-const methods -------------------------------------
     void insert(T val, float prio);
     
     void change_priority(T val, float prio);
@@ -63,6 +57,13 @@ public:
     void remove(T val);
     
     T extract_min();
+    
+// -------------------------------------- public static methods ---------------------------------------
+    static int index_of_parent(int start_index);
+    
+    static int index_of_left_child(int start_index);
+    
+    static int index_of_right_child(int start_index);
 };
 
 template <typename T>
