@@ -267,7 +267,6 @@ void Queue<T>::change_priority(T val, float prio) {
     int index = search_value(val, 0);
     if (index != -1) {
         _entries[index].set_priority(prio);
-        //std::cout << "Priority successfully changed to " << _entries[index].get_priority() << std::endl;
         assert_min_heap(index);
     } else {
         throw ValueNotFoundException();

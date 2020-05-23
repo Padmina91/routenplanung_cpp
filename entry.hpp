@@ -8,8 +8,6 @@
 
 #include <iostream>
 
-#define DEBUG true
-
 template <typename T>
 class Entry {
 private:
@@ -18,8 +16,6 @@ private:
 
 public:
     explicit Entry();
-    
-    //explicit Entry(T& val, float prio);
     
     T get_value() const;
     
@@ -34,10 +30,6 @@ public:
 
 template <typename T>
 Entry<T>::Entry() : _value(), _priority() {}
-
-//template <typename T>
-//Entry<T>::Entry(T& val, float prio) : _value(val), _priority(prio) {}
-
 
 template <typename T>
 T Entry<T>::get_value() const {
@@ -61,7 +53,6 @@ void Entry<T>::set_priority(float prio) {
 
 template <typename T>
 Entry<T>& Entry<T>::operator=(const Entry<T>& original) {
-    //std::cout << "operator=() wird ausgefuehrt...\n";
     _priority = original.get_priority();
     _value = original.get_value();
     return *this;
