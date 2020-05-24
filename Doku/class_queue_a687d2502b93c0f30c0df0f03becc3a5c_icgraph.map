@@ -1,5 +1,8 @@
 <map id="Queue::remove" name="Queue::remove">
-<area shape="rect" id="node1" title=" " alt="" coords="175,31,284,57"/>
-<area shape="rect" id="node2" href="$class_testdriver.html#a0752fad9eadb50044d94bc9602fd61dc" title=" " alt="" coords="5,5,127,32"/>
-<area shape="rect" id="node3" href="$class_testdriver.html#abd3b081b2ab1726d453a71d17e36ae25" title=" " alt="" coords="5,56,127,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="631,31,740,57"/>
+<area shape="rect" id="node2" href="$class_testdriver.html#ab7952de88ade8ddf3568dcf2a460019f" title=" " alt="" coords="461,5,583,32"/>
+<area shape="rect" id="node6" href="$class_testdriver.html#a1d7a4048ca04b6d80dcdcab8545a8a2c" title=" " alt="" coords="461,56,583,83"/>
+<area shape="rect" id="node3" href="$class_testdriver.html#a69fcaf02ab7d87da7422794a22ef68cb" title=" " alt="" coords="283,23,413,65"/>
+<area shape="rect" id="node4" href="$class_testdriver.html#a00e2d245676bb1b112f054b26bd2390d" title=" " alt="" coords="104,23,235,65"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,31,56,57"/>
 </map>
