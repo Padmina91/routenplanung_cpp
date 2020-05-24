@@ -286,8 +286,8 @@ void Queue<T>::insert(T val, float prio) {
         }
         _entries[_next].set_value(val);
         _entries[_next].set_priority(prio);
-        assert_min_heap(_next);
         _next++;
+        assert_min_heap(_next);
     }
 }
 
