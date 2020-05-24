@@ -39,7 +39,7 @@ private:
 
 public:
 // ---------------------------------------- public attributes -----------------------------------------
-    static int num_of_queues_alive;
+    static int num_of_queues_alive; // only for debugging
 
 // ------------------------------------ constructors & destructor -------------------------------------
     explicit Queue();

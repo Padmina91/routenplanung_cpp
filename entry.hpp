@@ -15,7 +15,7 @@ private:
     float _priority;
 
 public:
-    static int num_of_entries_alive;
+    static int num_of_entries_alive; // only for debugging
     
     explicit Entry();
     
