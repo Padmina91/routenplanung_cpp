@@ -25,26 +25,26 @@ private:
     
     void decrease_capacity();
     
-    void swap_entries(int x, int y);
+    void swap_entries(int, int);
     
-    void remove_entry_at(int index);
+    void remove_entry_at(int);
     
-    int search_value(T val, int start_index);
+    int search_value(T, int);
     
-    void assert_min_heap_bottom_up(int start_index);
+    void assert_min_heap_bottom_up(int);
     
-    void assert_min_heap_top_down(int start_index);
+    void assert_min_heap_top_down(int);
     
-    void assert_min_heap(int index);
+    void assert_min_heap(int);
 
 public:
 // ---------------------------------------- public attributes -----------------------------------------
-    static int num_of_queues_alive; // only for debugging
+    static int num_of_queues_alive;  // only for debugging & testing
 
 // ------------------------------------ constructors & destructor -------------------------------------
     explicit Queue();
     
-    Queue(Queue& original);
+    Queue(Queue&);
     
     ~Queue();
 
@@ -53,23 +53,23 @@ public:
     
     int get_next() const;
     
-    Entry<T> get_entry_at(int index) const;
+    Entry<T> get_entry_at(int) const;
 
 // ------------------------------------- public non-const methods -------------------------------------
-    void insert(T val, float prio);
+    void insert(T, float);
     
-    void change_priority(T val, float prio);
+    void change_priority(T, float);
     
-    void remove(T val);
+    void remove(T);
     
     T extract_min();
 
 // -------------------------------------- public static methods ---------------------------------------
-    static int index_of_parent(int start_index);
+    static int index_of_parent(int);
     
-    static int index_of_left_child(int start_index);
+    static int index_of_left_child(int);
     
-    static int index_of_right_child(int start_index);
+    static int index_of_right_child(int);
 };
 
 template <typename T>
@@ -101,9 +101,13 @@ void Queue<T>::increase_capacity() {
     _entries = temp;
 }
 
+/**
+ * Verringert die Kapazitaet. Kapazitaet faellt niemals unter 100.
+ * @tparam T (typename)
+ */
 template <typename T>
 void Queue<T>::decrease_capacity() {
-    if (_next < _size / 2) {
+    if (_next < _size / 3 && _size > 100) {
         _size /= 2;
         auto *temp = new Entry<T>[_size];
         for (int i = 0; i < _next; i++) {
@@ -126,7 +130,7 @@ void Queue<T>::remove_entry_at(int index) {
     _next--;
     swap_entries(index, _next);
     assert_min_heap(index);
-    if (_next < _size / 3) {
+    if (_next < _size / 3 && _size > 100) {
         decrease_capacity();
     }
 }
@@ -207,32 +211,10 @@ void Queue<T>::assert_min_heap(int index) {
     }
 }
 
-
-// -------------------------------------- private static methods --------------------------------------
-
-template <typename T>
-int Queue<T>::index_of_parent(int start_index) {
-    if (start_index > 0) {
-        return (start_index - 1) / 2;
-    } else {
-        return -1;
-    }
-}
-
-template <typename T>
-int Queue<T>::index_of_left_child(int start_index) {
-    return start_index * 2 + 1;
-}
-
-template <typename T>
-int Queue<T>::index_of_right_child(int start_index) {
-    return start_index * 2 + 2;
-}
-
 // ---------------------------------------- public attributes -----------------------------------------
 
 template <typename T>
-int Queue<T>::num_of_queues_alive = 0;
+int Queue<T>::num_of_queues_alive = 0; // only for debugging & testing
 
 // ------------------------------------ constructors & destructor -------------------------------------
 
@@ -322,6 +304,28 @@ T Queue<T>::extract_min() {
         return smallest_element;
     }
     throw EmptyHeapException();
+}
+
+
+// -------------------------------------- public static methods ---------------------------------------
+
+template <typename T>
+int Queue<T>::index_of_parent(int start_index) {
+    if (start_index > 0) {
+        return (start_index - 1) / 2;
+    } else {
+        return -1;
+    }
+}
+
+template <typename T>
+int Queue<T>::index_of_left_child(int start_index) {
+    return start_index * 2 + 1;
+}
+
+template <typename T>
+int Queue<T>::index_of_right_child(int start_index) {
+    return start_index * 2 + 2;
 }
 
 #endif //ROUTENPLANUNG_CPP_QUEUE_HPP

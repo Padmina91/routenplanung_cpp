@@ -11,18 +11,22 @@
 template <typename T>
 class Entry {
 private:
+// ---------------------------------------- private attributes ----------------------------------------
     T _value;
     float _priority;
 
 public:
+// ---------------------------------------- public attributes -----------------------------------------
     static int num_of_entries_alive; // only for debugging
-    
+
+// ------------------------------------ constructors & destructor -------------------------------------
     explicit Entry();
     
-    Entry(Entry& original);
+    Entry(Entry&);
     
     ~Entry();
-    
+
+// ---------------------------------------- getters & setters -----------------------------------------
     T get_value() const;
     
     float get_priority() const;
@@ -30,12 +34,20 @@ public:
     void set_value(T);
     
     void set_priority(float);
-    
-    Entry<T>& operator=(const Entry<T>& original);
+
+// ------------------------------------- public non-const methods -------------------------------------
+    Entry<T>& operator=(const Entry<T>&);
 };
+
+
+
+
+// ---------------------------------------- public attributes -----------------------------------------
 
 template <typename T>
 int Entry<T>::num_of_entries_alive = 0;
+
+// ------------------------------------ constructors & destructor -------------------------------------
 
 template <typename T>
 Entry<T>::Entry() : _value(), _priority() {
@@ -53,6 +65,8 @@ template <typename T>
 Entry<T>::~Entry<T>() {
     num_of_entries_alive--;
 }
+
+// ---------------------------------------- getters & setters -----------------------------------------
 
 template <typename T>
 T Entry<T>::get_value() const {
@@ -73,6 +87,8 @@ template <typename T>
 void Entry<T>::set_priority(float prio) {
     _priority = prio;
 }
+
+// ------------------------------------- public non-const methods -------------------------------------
 
 template <typename T>
 Entry<T>& Entry<T>::operator=(const Entry<T>& original) {
