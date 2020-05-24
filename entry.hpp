@@ -15,7 +15,13 @@ private:
     float _priority;
 
 public:
+    static int num_of_entries_alive;
+    
     explicit Entry();
+    
+    Entry(Entry& original);
+    
+    ~Entry();
     
     T get_value() const;
     
@@ -29,7 +35,24 @@ public:
 };
 
 template <typename T>
-Entry<T>::Entry() : _value(), _priority() {}
+int Entry<T>::num_of_entries_alive = 0;
+
+template <typename T>
+Entry<T>::Entry() : _value(), _priority() {
+    num_of_entries_alive++;
+}
+
+template <typename T>
+Entry<T>::Entry(Entry& original) {
+    _value = original.get_value();
+    _priority = original.get_priority();
+    num_of_entries_alive++;
+}
+
+template <typename T>
+Entry<T>::~Entry<T>() {
+    num_of_entries_alive--;
+}
 
 template <typename T>
 T Entry<T>::get_value() const {

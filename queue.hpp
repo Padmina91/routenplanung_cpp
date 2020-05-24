@@ -35,16 +35,22 @@ private:
     
     void assert_min_heap_top_down(int start_index);
     
-    void assert_min_heap (int index);
-
+    void assert_min_heap(int index);
 
 public:
+// ---------------------------------------- public attributes -----------------------------------------
+    static int num_of_queues_alive;
+
 // ------------------------------------ constructors & destructor -------------------------------------
     explicit Queue();
     
-    ~Queue();
+    Queue(Queue& original);
     
+    ~Queue();
+
 // ---------------------------------------- getters & setters -----------------------------------------
+    int get_size() const;
+    
     int get_next() const;
     
     Entry<T> get_entry_at(int index) const;
@@ -57,7 +63,7 @@ public:
     void remove(T val);
     
     T extract_min();
-    
+
 // -------------------------------------- public static methods ---------------------------------------
     static int index_of_parent(int start_index);
     
@@ -69,7 +75,8 @@ public:
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Queue<T>& queue) {
     for (int i = 0; i < queue.get_next(); i++) {
-        os << "Element at " << i << ": " << queue.get_entry_at(i).get_value() << ", priority: " << queue.get_entry_at(i).get_priority() << std::endl;
+        os << "Element at " << i << ": " << queue.get_entry_at(i).get_value() << ", priority: "
+           << queue.get_entry_at(i).get_priority() << std::endl;
     }
     return os;
 }
@@ -96,7 +103,7 @@ void Queue<T>::increase_capacity() {
 
 template <typename T>
 void Queue<T>::decrease_capacity() {
-    if (_next < _size/2) {
+    if (_next < _size / 2) {
         _size /= 2;
         auto *temp = new Entry<T>[_size];
         for (int i = 0; i < _next; i++) {
@@ -119,7 +126,7 @@ void Queue<T>::remove_entry_at(int index) {
     _next--;
     swap_entries(index, _next);
     assert_min_heap(index);
-    if (_next < _size/3) {
+    if (_next < _size / 3) {
         decrease_capacity();
     }
 }
@@ -142,7 +149,6 @@ int Queue<T>::search_value(T val, int start_index) {
     }
     return found_index;
 }
-
 
 template <typename T>
 void Queue<T>::assert_min_heap_bottom_up(int start_index) {
@@ -185,7 +191,7 @@ void Queue<T>::assert_min_heap_top_down(int start_index) {
 }
 
 template <typename T>
-void Queue<T>::assert_min_heap (int index) {
+void Queue<T>::assert_min_heap(int index) {
     int parent_index = index_of_parent(index);
     int left_child_index = index_of_left_child(index);
     int right_child_index = index_of_right_child(index);
@@ -222,6 +228,11 @@ int Queue<T>::index_of_right_child(int start_index) {
     return start_index * 2 + 2;
 }
 
+// ---------------------------------------- public attributes -----------------------------------------
+
+template <typename T>
+int Queue<T>::num_of_queues_alive = 0;
+
 // ------------------------------------ constructors & destructor -------------------------------------
 
 template <typename T>
@@ -229,14 +240,31 @@ Queue<T>::Queue() {
     _size = 100;
     _next = 0;
     _entries = new Entry<T>[_size]; // reserving space for _size entries upon construction
+    num_of_queues_alive++;
+}
+
+template <typename T>
+Queue<T>::Queue(Queue& original) {
+    _size = original.get_size();
+    _next = original.get_next();
+    for (int i = 0; i < _next; i++) {
+        _entries[i] = original.get_entry_at(i);
+    }
+    num_of_queues_alive++;
 }
 
 template <typename T>
 Queue<T>::~Queue() {
     delete[] _entries;
+    num_of_queues_alive--;
 }
 
 // ---------------------------------------- getters & setters -----------------------------------------
+
+template <typename T>
+int Queue<T>::get_size() const {
+    return _size;
+}
 
 template <typename T>
 int Queue<T>::get_next() const {
