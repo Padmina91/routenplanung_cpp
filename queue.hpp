@@ -72,6 +72,18 @@ public:
     static int index_of_right_child(int);
 };
 
+// ****************************************************************************************************
+// ****************************************************************************************************
+
+// ----------------------------------- global operator overloading ------------------------------------
+
+/**
+ * Ueberladung des Ausgabe-Parameters OHNE friend-Deklaration. Das Problem wurde ueber Getter geloest.
+ * @tparam T (typename)
+ * @param os (ostream&)
+ * @param queue (const Queue<T>&)
+ * @return os (ostream&)
+ */
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Queue<T>& queue) {
     for (int i = 0; i < queue.get_next(); i++) {
@@ -83,6 +95,11 @@ std::ostream& operator<<(std::ostream& os, const Queue<T>& queue) {
 
 // -------------------------------------- private const methods ---------------------------------------
 
+/**
+ * Gibt an, ob die Queue leer ist.
+ * @tparam T (typename)
+ * @return is_empty (bool)
+ */
 template <typename T>
 bool Queue<T>::is_empty() const {
     return _next == 0;
@@ -90,6 +107,10 @@ bool Queue<T>::is_empty() const {
 
 // ------------------------------------ private non-const methods -------------------------------------
 
+/**
+ * Verdoppelt die Kapazitaet der Queue.
+ * @tparam T (typename)
+ */
 template <typename T>
 void Queue<T>::increase_capacity() {
     _size *= 2;
@@ -102,7 +123,7 @@ void Queue<T>::increase_capacity() {
 }
 
 /**
- * Verringert die Kapazitaet. Kapazitaet faellt niemals unter 100.
+ * Halbiert die Kapazitaet. Kapazitaet faellt niemals unter 100.
  * @tparam T (typename)
  */
 template <typename T>
@@ -118,6 +139,12 @@ void Queue<T>::decrease_capacity() {
     }
 }
 
+/**
+ * Vertauscht die Eintraege an Stelle x und y.
+ * @tparam T (typename)
+ * @param x (int)
+ * @param y (int)
+ */
 template <typename T>
 void Queue<T>::swap_entries(int x, int y) {
     Entry<T> temp = _entries[x];
@@ -125,6 +152,11 @@ void Queue<T>::swap_entries(int x, int y) {
     _entries[y] = temp;
 }
 
+/**
+ * Entfernt den Eintrag an Stelle index.
+ * @tparam T (typename)
+ * @param index (int)
+ */
 template <typename T>
 void Queue<T>::remove_entry_at(int index) {
     _next--;
@@ -135,6 +167,13 @@ void Queue<T>::remove_entry_at(int index) {
     }
 }
 
+/**
+ * Durchsucht die Queue rekursiv nach dem Wert val.
+ * @tparam T (typename)
+ * @param val (T)
+ * @param start_index (int)
+ * @return found_index (int)
+ */
 template <typename T>
 int Queue<T>::search_value(T val, int start_index) {
     int found_index = -1;
@@ -155,6 +194,12 @@ int Queue<T>::search_value(T val, int start_index) {
     return found_index;
 }
 
+/**
+ * Stellt die Eigenschaft des Min-Heaps wieder her, indem es so oft Elemente
+ * von unten nach oben durchreicht wie es noetig ist.
+ * @tparam T (typename)
+ * @param start_index (int)
+ */
 template <typename T>
 void Queue<T>::assert_min_heap_bottom_up(int start_index) {
     int parent_index = index_of_parent(start_index);
@@ -174,6 +219,12 @@ void Queue<T>::assert_min_heap_bottom_up(int start_index) {
     }
 }
 
+/**
+ * Stellt die Eigenschaft des Min-Heaps wieder her, indem es so oft Elemente
+ * von oben nach unten durchreicht wie es noetig ist.
+ * @tparam T (typename)
+ * @param start_index (int)
+ */
 template <typename T>
 void Queue<T>::assert_min_heap_top_down(int start_index) {
     int left_child_index = index_of_left_child(start_index);
@@ -195,6 +246,14 @@ void Queue<T>::assert_min_heap_top_down(int start_index) {
     }
 }
 
+/**
+ * Untersucht den Eintrag an Stelle index, ob er nach oben oder unten durchgereicht
+ * werden muss, um die Eigenschaft eines Min-Heaps wiederherzustellen und ruft dann
+ * die entsprechende Methode auf. Ist der Eintrag bereits an der richtigen Stelle,
+ * wird keine der beiden Methoden aufgerufen.
+ * @tparam T (typename)
+ * @param index (int)
+ */
 template <typename T>
 void Queue<T>::assert_min_heap(int index) {
     int parent_index = index_of_parent(index);
@@ -213,11 +272,19 @@ void Queue<T>::assert_min_heap(int index) {
 
 // ---------------------------------------- public attributes -----------------------------------------
 
+/**
+ * Zaehlt die Queue-Objekte, fuer die gerade Speicher reserviert ist.
+ * @tparam T (typename)
+ */
 template <typename T>
 int Queue<T>::num_of_queues_alive = 0; // only for debugging & testing
 
 // ------------------------------------ constructors & destructor -------------------------------------
 
+/**
+ * Konstruktor der Klasse Queue. Reserviert 100 Speicherplaetze fuer die Queue.
+ * @tparam T (typename)
+ */
 template <typename T>
 Queue<T>::Queue() {
     _size = 100;
@@ -226,6 +293,12 @@ Queue<T>::Queue() {
     num_of_queues_alive++;
 }
 
+/**
+ * Copy-Constructor der Klasse Queue. Wird derzeit nicht benutzt, aber falls doch,
+ * muss num_of_queues_alive um eins hochgezaehlt werden.
+ * @tparam T (typename)
+ * @param original (Queue&)
+ */
 template <typename T>
 Queue<T>::Queue(Queue& original) {
     _size = original.get_size();
@@ -236,6 +309,10 @@ Queue<T>::Queue(Queue& original) {
     num_of_queues_alive++;
 }
 
+/**
+ * Destruktor der Klasse Queue.
+ * @tparam T
+ */
 template <typename T>
 Queue<T>::~Queue() {
     delete[] _entries;
@@ -244,23 +321,48 @@ Queue<T>::~Queue() {
 
 // ---------------------------------------- getters & setters -----------------------------------------
 
+/**
+ * Getter-Methode fuer das private Attribut _size.
+ * @tparam T (typename)
+ * @return _size (int)
+ */
 template <typename T>
 int Queue<T>::get_size() const {
     return _size;
 }
 
+/**
+ * Getter-Methode fuer das private Attribut _next.
+ * @tparam T (typename)
+ * @return _next (int)
+ */
 template <typename T>
 int Queue<T>::get_next() const {
     return _next;
 }
 
+/**
+ * Getter-Methode fuer ein beliebiges Element aus der Queue.
+ * @tparam T (typename)
+ * @throws IndexOutOfBoundsException
+ * @return _entries[index] (Entry<T>)
+ */
 template <typename T>
 Entry<T> Queue<T>::get_entry_at(int index) const {
-    return _entries[index];
+    if (index < _next) {
+        return _entries[index];
+    }
+    throw IndexOutOfBoundsException();
 }
 
 // ------------------------------------- public non-const methods -------------------------------------
 
+/**
+ * Fuegt einen Eintrag zu _entries hinzu, sofern die Prioritaet positiv ist.
+ * @tparam T (typename)
+ * @param val (T)
+ * @param prio (float)
+ */
 template <typename T>
 void Queue<T>::insert(T val, float prio) {
     if (prio > 0.0) {
@@ -274,6 +376,13 @@ void Queue<T>::insert(T val, float prio) {
     }
 }
 
+/**
+ * Aendert die Prioritaet des Eintrages val, sofern vorhanden.
+ * @tparam T (typename)
+ * @param val (T)
+ * @param prio (float)
+ * @throws ValueNotFoundException
+ */
 template <typename T>
 void Queue<T>::change_priority(T val, float prio) {
     int index = search_value(val, 0);
@@ -285,6 +394,12 @@ void Queue<T>::change_priority(T val, float prio) {
     }
 }
 
+/**
+ * Entfernt den Eintrag mit dem Wert val, sofern vorhanden.
+ * @tparam T (typename)
+ * @param val (T)
+ * @throws ValueNotFoundException
+ */
 template <typename T>
 void Queue<T>::remove(T val) {
     int index = search_value(val, 0);
@@ -295,6 +410,12 @@ void Queue<T>::remove(T val) {
     }
 }
 
+/**
+ * Entfernt das Minimum sofern vorhanden und sortiert anschliessend die Queue neu.
+ * @tparam T (typename)
+ * @throws EmptyHeapException
+ * @return smallest_element (T)
+ */
 template <typename T>
 T Queue<T>::extract_min() {
     T smallest_element;
@@ -306,9 +427,14 @@ T Queue<T>::extract_min() {
     throw EmptyHeapException();
 }
 
-
 // -------------------------------------- public static methods ---------------------------------------
 
+/**
+ * Liefert den Index des Eltern-Knotens.
+ * @tparam T (typename)
+ * @param start_index (int)
+ * @return index_of_parent (int)
+ */
 template <typename T>
 int Queue<T>::index_of_parent(int start_index) {
     if (start_index > 0) {
@@ -318,11 +444,23 @@ int Queue<T>::index_of_parent(int start_index) {
     }
 }
 
+/**
+ * Liefert den Index des linken Kind-Knotens.
+ * @tparam T (typename)
+ * @param start_index (int)
+ * @return index_of_left_child (int)
+ */
 template <typename T>
 int Queue<T>::index_of_left_child(int start_index) {
     return start_index * 2 + 1;
 }
 
+/**
+ * Liefert den Index des rechten Kind-Knotens.
+ * @tparam T (typename)
+ * @param start_index (int)
+ * @return index_of_right_child (int)
+ */
 template <typename T>
 int Queue<T>::index_of_right_child(int start_index) {
     return start_index * 2 + 2;

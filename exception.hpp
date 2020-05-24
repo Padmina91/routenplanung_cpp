@@ -12,4 +12,6 @@ class EmptyHeapException : std::exception {};
 
 class ValueNotFoundException: std::exception {};
 
+class IndexOutOfBoundsException : std::exception {};
+
 #endif //ROUTENPLANUNG_CPP_EXCEPTION_HPP

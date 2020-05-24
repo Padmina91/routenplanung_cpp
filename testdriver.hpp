@@ -12,19 +12,14 @@
 
 class Testdriver {
 private:
+// -------------------------------------- private const methods ---------------------------------------
     template <typename T>
     bool test_min_heap_correctness(const Queue<T>& queue, int start_index) const;
     
-    static void print_success_message(bool test_successful, int test_number, const std::string& type_name);
-    
-    static std::string generate_pseudo_random_string(int length);
-    
-    static int generate_pseudo_random_int();
-    
-    static float generate_pseudo_random_float();
-    
-    static double generate_pseudo_random_double();
-    
+    template <typename T>
+    void test_cleanup(const std::string& type_name) const;
+
+// ------------------------------------ private non-const methods -------------------------------------
     template <typename T>
     void insert_strings_to_queue(Queue<T>& queue, int number_of_inserts);
     
@@ -70,16 +65,36 @@ private:
     template <typename T>
     void execute_all_tests(const std::string& type_name);
     
-    template <typename T>
-    void test_cleanup(const std::string& type_name) const;
-
-public:
+// -------------------------------------- private static methods --------------------------------------
+    static void print_success_message(bool test_successful, int test_number, const std::string& type_name);
     
+    static std::string generate_pseudo_random_string(int length);
+    
+    static int generate_pseudo_random_int();
+    
+    static float generate_pseudo_random_float();
+    
+    static double generate_pseudo_random_double();
+    
+public:
+// -------------------------------------- public static methods ---------------------------------------
     static void execute_tests();
 };
 
+// ****************************************************************************************************
+// ****************************************************************************************************
+
+// -------------------------------------- private const methods ---------------------------------------
+
+/**
+ * Durchlaeuft die Queue rekursiv und untersucht, ob sie korrekt sortiert ist (Min-Heap)
+ * @tparam T (typename)
+ * @param queue (const Queue<T>&)
+ * @param start_index (int)
+ * @return heap_correct (bool)
+ */
 template <typename T>
-bool Testdriver::test_min_heap_correctness(Queue<T> const& queue, int start_index) const {
+bool Testdriver::test_min_heap_correctness(const Queue<T>& queue, int start_index) const {
     int parent_index = Queue<T>::index_of_parent(start_index);
     int left_child_index = Queue<T>::index_of_left_child(start_index);
     int right_child_index = Queue<T>::index_of_right_child(start_index);
@@ -100,38 +115,29 @@ bool Testdriver::test_min_heap_correctness(Queue<T> const& queue, int start_inde
     return heap_correct;
 }
 
-void Testdriver::print_success_message(bool test_successful, int test_number, const std::string& type_name) {
-    if (test_successful) {
-        std::cout << "Test " << test_number << " erfolgreich. (Datentyp: " << type_name << ")" << std::endl;
+/**
+ * Testet, ob alle Queues und alle Entries zerstoert wurden oder ob irgendwo
+ * noch Speicher bereitgestellt wird, der nicht mehr gebraucht wird.
+ * @tparam T (typename)
+ * @param type_name (const std::string&)
+ */
+template <typename T>
+void Testdriver::test_cleanup(const std::string& type_name) const {
+    if (Queue<T>::num_of_queues_alive == 0 && Entry<T>::num_of_entries_alive == 0) {
+        std::cout << "Test 11 erfolgreich. (Datentyp: " << type_name << ")" << std::endl;
     } else {
-        std::cout << "Test " << test_number << " FEHLGESCHLAGEN!!! (Datentyp: " << type_name << ")" << std::endl;
+        std::cout << "Test 11 FEHLGESCHLAGEN!!! (Datentyp: " << type_name << ")" << std::endl;
     }
 }
 
-std::string Testdriver::generate_pseudo_random_string(int length) {
-    char s[length+1];
-    static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    
-    for (int i = 0; i < length; ++i) {
-        s[i] = alphanum[rand() % 61];
-    }
-    
-    s[length] = 0;
-    return s;
-}
+// ------------------------------------ private non-const methods -------------------------------------
 
-int Testdriver::generate_pseudo_random_int() {
-    return static_cast<int>(rand());
-}
-
-float Testdriver::generate_pseudo_random_float() {
-    return static_cast<float>(rand()) / 14.0f + 1.0f; // generate at least 1.0 for testing reasons
-}
-
-double Testdriver::generate_pseudo_random_double() {
-    return static_cast<double>(rand()) / 13.0;
-}
-
+/**
+ * Fuegt die vorgegebene Anzahl an string-Elementen in die Queue ein.
+ * @tparam T (typename)
+ * @param queue (Queue<T>&)
+ * @param number_of_inserts (int)
+ */
 template <typename T>
 void Testdriver::insert_strings_to_queue(Queue<T>& queue, int number_of_inserts) {
     for (int i = 0; i < number_of_inserts; i++) {
@@ -139,6 +145,12 @@ void Testdriver::insert_strings_to_queue(Queue<T>& queue, int number_of_inserts)
     }
 }
 
+/**
+ * Fuegt die vorgegebene Anzahl an int-Elementen in die Queue ein.
+ * @tparam T (typename)
+ * @param queue (Queue<T>&)
+ * @param number_of_inserts (int)
+ */
 template <typename T>
 void Testdriver::insert_ints_to_queue(Queue<T>& queue, int number_of_inserts) {
     for (int i = 0; i < number_of_inserts; i++) {
@@ -146,6 +158,12 @@ void Testdriver::insert_ints_to_queue(Queue<T>& queue, int number_of_inserts) {
     }
 }
 
+/**
+ * Fuegt die vorgegebene Anzahl an float-Elementen in die Queue ein.
+ * @tparam T (typename)
+ * @param queue (Queue<T>&)
+ * @param number_of_inserts (int)
+ */
 template <typename T>
 void Testdriver::insert_floats_to_queue(Queue<T>& queue, int number_of_inserts) {
     for (int i = 0; i < number_of_inserts; i++) {
@@ -153,6 +171,12 @@ void Testdriver::insert_floats_to_queue(Queue<T>& queue, int number_of_inserts) 
     }
 }
 
+/**
+ * Fuegt die vorgegebene Anzahl an double-Elementen in die Queue ein.
+ * @tparam T (typename)
+ * @param queue (Queue<T>&)
+ * @param number_of_inserts (int)
+ */
 template <typename T>
 void Testdriver::insert_doubles_to_queue(Queue<T>& queue, int number_of_inserts) {
     for (int i = 0; i < number_of_inserts; i++) {
@@ -160,6 +184,12 @@ void Testdriver::insert_doubles_to_queue(Queue<T>& queue, int number_of_inserts)
     }
 }
 
+/**
+ * Testet, ob die Methode extract_min erfolgreich eine Exception wirft, wenn sie
+ * auf einem leeren Heap aufgerufen wird.
+ * @tparam T (typename)
+ * @param type_name (const std::string&)
+ */
 template <typename T>
 void Testdriver::test01(const std::string& type_name) {
     bool test_successful = false;
@@ -176,7 +206,7 @@ void Testdriver::test01(const std::string& type_name) {
  * Testet, ob eine ValueNotFoundException geworfen wird, wenn versucht wird,
  * die Priorität von einem Element zu ändern, das es nicht gibt.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test02(const std::string& type_name) {
@@ -225,7 +255,7 @@ void Testdriver::test02(const std::string& type_name) {
  * Testet, ob eine ValueNotFoundException geworfen wird, wenn versucht wird,
  * ein Element aus der Queue zu entfernen, das es nicht gibt.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test03(const std::string& type_name) {
@@ -273,7 +303,7 @@ void Testdriver::test03(const std::string& type_name) {
 /**
  * Testet, ob der Wert und die zugehörige Priorität beim Sortieren des Heaps beieinander bleiben.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test04(const std::string& type_name) {
@@ -313,7 +343,7 @@ void Testdriver::test04(const std::string& type_name) {
 /**
  * Testet, ob der Heap nach Einfügen von vielen Werten korrekt sortiert bleibt.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test05(const std::string& type_name) {
@@ -341,7 +371,7 @@ void Testdriver::test05(const std::string& type_name) {
 /**
  *  Testet, ob die Kapazität des Heaps korrekt vergrößert wird, sobald die Kapazitätsgrenze erreicht ist.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test06(const std::string& type_name) {
@@ -371,7 +401,7 @@ void Testdriver::test06(const std::string& type_name) {
  * mit der kleinsten Priorität liefert, den Heap um eins
  * verkleinert und anschließend richtig sortiert.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test07(const std::string& type_name) {
@@ -404,11 +434,10 @@ void Testdriver::test07(const std::string& type_name) {
     print_success_message(test_successful, 7, type_name);
 }
 
-
 /**
  * Testet, ob die Methode remove() das gesuchte Element entfernt, egal wo es sich befindet.
  * @tparam T (typename)
- * @param type_name
+ * @param type_name (const std::string&)
  */
 template <typename T>
 void Testdriver::test08(const std::string& type_name) {
@@ -465,11 +494,15 @@ void Testdriver::test08(const std::string& type_name) {
     print_success_message(test_successful, 8, type_name);
 }
 
-
-//TODO: test decrease_capacity()!!!
+/**
+ * Testet, ob die Speicherkapazitaet erfolgreich verringert wird,
+ * sobald die Queue zu weniger als einem Drittel gefuellt ist.
+ * @tparam T (typename)
+ * @param type_name (const std::string&)
+ */
 template <typename T>
 void Testdriver::test09(const std::string& type_name) {
-    bool test_successful = false;
+    bool test_successful;
     if (type_name == "string") {
         Queue<std::string> test_queue09_1;
         insert_strings_to_queue(test_queue09_1, 201);
@@ -514,12 +547,14 @@ void Testdriver::test09(const std::string& type_name) {
     print_success_message(test_successful, 9, type_name);
 }
 
-
-//TODO: test change_key()!!!!!
+/**
+ * Testet, ob die change_priority-Methode funktioniert.
+ * @tparam T (typename)
+ * @param type_name (const std::string&)
+ */
 template <typename T>
 void Testdriver::test10(const std::string& type_name) {
     bool test_successful = false;
-    
     if (type_name == "string") {
         Queue<std::string> test_queue10_1;
         insert_strings_to_queue(test_queue10_1, 500);
@@ -556,6 +591,11 @@ void Testdriver::test10(const std::string& type_name) {
     print_success_message(test_successful, 10, type_name);
 }
 
+/**
+ * Fuehrt alle Tests mit dem vorgegebenen Datentypen aus.
+ * @tparam T (typename)
+ * @param type_name (const std::string&)
+ */
 template <typename T>
 void Testdriver::execute_all_tests(const std::string& type_name) {
     test01<T>(type_name);
@@ -570,15 +610,68 @@ void Testdriver::execute_all_tests(const std::string& type_name) {
     test10<T>(type_name);
 }
 
-template <typename T>
-void Testdriver::test_cleanup(const std::string& type_name) const {
-    if (Queue<T>::num_of_queues_alive == 0 && Entry<T>::num_of_entries_alive == 0) {
-        std::cout << "Test 11 erfolgreich. (Datentyp: " << type_name << ")" << std::endl;
+// -------------------------------------- private static methods --------------------------------------
+
+/**
+ * Gibt aus, ob ein Test erfolgreich war oder nicht.
+ * @param test_successful (bool)
+ * @param test_number (int)
+ * @param type_name (const std::string&)
+ */
+void Testdriver::print_success_message(bool test_successful, int test_number, const std::string& type_name) {
+    if (test_successful) {
+        std::cout << "Test " << test_number << " erfolgreich. (Datentyp: " << type_name << ")" << std::endl;
     } else {
-        std::cout << "Test 11 FEHLGESCHLAGEN!!! (Datentyp: " << type_name << ")" << std::endl;
+        std::cout << "Test " << test_number << " FEHLGESCHLAGEN!!! (Datentyp: " << type_name << ")" << std::endl;
     }
 }
 
+/**
+ * Generiert einen pseudo-random alphanumerischen String.
+ * @param length (int)
+ * @return rand_string
+ */
+std::string Testdriver::generate_pseudo_random_string(int length) {
+    char rand_string[length + 1];
+    static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    
+    for (int i = 0; i < length; ++i) {
+        rand_string[i] = alphanum[rand() % 61];
+    }
+    
+    rand_string[length] = 0;
+    return rand_string;
+}
+
+/**
+ * Generiert einen pseudo-random int. Bereich: 0 bis RAND_MAX
+ * @return rand_int
+ */
+int Testdriver::generate_pseudo_random_int() {
+    return static_cast<int>(rand());
+}
+
+/**
+ * Generiert einen pseudo-random float. Bereich: 1 bis RAND_MAX / 14 + 1
+ * @return rand_float
+ */
+float Testdriver::generate_pseudo_random_float() {
+    return static_cast<float>(rand()) / 14.0f + 1.0f; // generate at least 1.0 for testing reasons
+}
+
+/**
+ * Generiert einen pseudo-random double. Bereich: 0 bis RAND_MAX / 13
+ * @return rand_double
+ */
+double Testdriver::generate_pseudo_random_double() {
+    return static_cast<double>(rand()) / 13.0;
+}
+
+// -------------------------------------- public static methods ---------------------------------------
+
+/**
+ * Fuehrt alle Tests mit 4 verschiedenen Datentypen aus.
+ */
 void Testdriver::execute_tests() {
     Testdriver testdriver;
     testdriver.execute_all_tests<int>("int");
