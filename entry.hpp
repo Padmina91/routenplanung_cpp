@@ -44,16 +44,30 @@ public:
 
 // ---------------------------------------- public attributes -----------------------------------------
 
+/**
+ * Nur fuer debugging- und Testzwecke: Zaehlt die Anzahl der
+ * Objekte der Klasse Entry, fuer die derzeit Speicher bereitgestellt wird.
+ * @tparam T (typename)
+ */
 template <typename T>
 int Entry<T>::num_of_entries_alive = 0;
 
 // ------------------------------------ constructors & destructor -------------------------------------
 
+/**
+ * Konstruktor der Klasse Entry.
+ * @tparam T (typename)
+ */
 template <typename T>
 Entry<T>::Entry() : _value(), _priority() {
     num_of_entries_alive++;
 }
 
+/**
+ * Copy-Constructor der Klasse Entry.
+ * @tparam T (typename)
+ * @param original (Entry&)
+ */
 template <typename T>
 Entry<T>::Entry(Entry& original) {
     _value = original.get_value();
@@ -61,6 +75,10 @@ Entry<T>::Entry(Entry& original) {
     num_of_entries_alive++;
 }
 
+/**
+ * Destruktor der Klasse Entry.
+ * @tparam T (typename)
+ */
 template <typename T>
 Entry<T>::~Entry<T>() {
     num_of_entries_alive--;
@@ -68,21 +86,41 @@ Entry<T>::~Entry<T>() {
 
 // ---------------------------------------- getters & setters -----------------------------------------
 
+/**
+ * Getter-Methode fuer das private Attribut _value.
+ * @tparam T (typename)
+ * @return _value
+ */
 template <typename T>
 T Entry<T>::get_value() const {
     return _value;
 }
 
+/**
+ * Getter-Methode fuer das private Attribut _priority.
+ * @tparam T (typename)
+ * @return _priority
+ */
 template <typename T>
 float Entry<T>::get_priority() const {
     return _priority;
 }
 
+/**
+ * Setter-Methode fuer das private Attribut _value.
+ * @tparam T (typename)
+ * @param val (T)
+ */
 template <typename T>
-void Entry<T>::set_value(T element) {
-    _value = element;
+void Entry<T>::set_value(T val) {
+    _value = val;
 }
 
+/**
+ * Setter-Methode fuer das private Attribut _priority
+ * @tparam T (typename)
+ * @param prio (float)
+ */
 template <typename T>
 void Entry<T>::set_priority(float prio) {
     _priority = prio;
@@ -90,6 +128,12 @@ void Entry<T>::set_priority(float prio) {
 
 // ------------------------------------- public non-const methods -------------------------------------
 
+/**
+ * Ueberladung des Zuweisungs-Operators.
+ * @tparam T (typename)
+ * @param original (const Entry<T>&)
+ * @return *this (Entry<T>&)
+ */
 template <typename T>
 Entry<T>& Entry<T>::operator=(const Entry<T>& original) {
     _priority = original.get_priority();
