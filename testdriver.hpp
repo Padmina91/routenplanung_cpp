@@ -35,31 +35,22 @@ private:
     template <typename T>
     void test01(const std::string& type_name);
     
-    template <typename T>
     void test02(const std::string& type_name);
     
-    template <typename T>
     void test03(const std::string& type_name);
     
-    template <typename T>
     void test04(const std::string& type_name);
     
-    template <typename T>
     void test05(const std::string& type_name);
     
-    template <typename T>
     void test06(const std::string& type_name);
     
-    template <typename T>
     void test07(const std::string& type_name);
     
-    template <typename T>
     void test08(const std::string& type_name);
-
-    template <typename T>
+    
     void test09(const std::string& type_name);
     
-    template <typename T>
     void test10(const std::string& type_name);
     
     template <typename T>
@@ -205,10 +196,8 @@ void Testdriver::test01(const std::string& type_name) {
 /**
  * Testet, ob eine ValueNotFoundException geworfen wird, wenn versucht wird,
  * die Priorität von einem Element zu ändern, das es nicht gibt.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test02(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
@@ -254,10 +243,8 @@ void Testdriver::test02(const std::string& type_name) {
 /**
  * Testet, ob eine ValueNotFoundException geworfen wird, wenn versucht wird,
  * ein Element aus der Queue zu entfernen, das es nicht gibt.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test03(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
@@ -302,10 +289,8 @@ void Testdriver::test03(const std::string& type_name) {
 
 /**
  * Testet, ob der Wert und die zugehörige Priorität beim Sortieren des Heaps beieinander bleiben.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test04(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
@@ -342,10 +327,8 @@ void Testdriver::test04(const std::string& type_name) {
 
 /**
  * Testet, ob der Heap nach Einfügen von vielen Werten korrekt sortiert bleibt.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test05(const std::string& type_name) {
     bool test_successful;
     if (type_name == "string") {
@@ -370,10 +353,8 @@ void Testdriver::test05(const std::string& type_name) {
 
 /**
  *  Testet, ob die Kapazität des Heaps korrekt vergrößert wird, sobald die Kapazitätsgrenze erreicht ist.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test06(const std::string& type_name) {
     bool test_successful;
     if (type_name == "string") {
@@ -400,10 +381,8 @@ void Testdriver::test06(const std::string& type_name) {
  * Testet, ob die Methode extract_min() wie erwartet das Element
  * mit der kleinsten Priorität liefert, den Heap um eins
  * verkleinert und anschließend richtig sortiert.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test07(const std::string& type_name) {
     bool test_successful;
     if (type_name == "string") {
@@ -436,10 +415,8 @@ void Testdriver::test07(const std::string& type_name) {
 
 /**
  * Testet, ob die Methode remove() das gesuchte Element entfernt, egal wo es sich befindet.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test08(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
@@ -497,10 +474,8 @@ void Testdriver::test08(const std::string& type_name) {
 /**
  * Testet, ob die Speicherkapazitaet erfolgreich verringert wird,
  * sobald die Queue zu weniger als einem Drittel gefuellt ist.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test09(const std::string& type_name) {
     bool test_successful;
     if (type_name == "string") {
@@ -549,10 +524,8 @@ void Testdriver::test09(const std::string& type_name) {
 
 /**
  * Testet, ob die change_priority-Methode funktioniert.
- * @tparam T (typename)
  * @param type_name (const std::string&)
  */
-template <typename T>
 void Testdriver::test10(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
@@ -599,15 +572,15 @@ void Testdriver::test10(const std::string& type_name) {
 template <typename T>
 void Testdriver::execute_all_tests(const std::string& type_name) {
     test01<T>(type_name);
-    test02<T>(type_name);
-    test03<T>(type_name);
-    test04<T>(type_name);
-    test05<T>(type_name);
-    test06<T>(type_name);
-    test07<T>(type_name);
-    test08<T>(type_name);
-    test09<T>(type_name);
-    test10<T>(type_name);
+    test02(type_name);
+    test03(type_name);
+    test04(type_name);
+    test05(type_name);
+    test06(type_name);
+    test07(type_name);
+    test08(type_name);
+    test09(type_name);
+    test10(type_name);
 }
 
 // -------------------------------------- private static methods --------------------------------------
@@ -629,7 +602,7 @@ void Testdriver::print_success_message(bool test_successful, int test_number, co
 /**
  * Generiert einen pseudo-random alphanumerischen String.
  * @param length (int)
- * @return rand_string
+ * @return rand_string (std::string)
  */
 std::string Testdriver::generate_pseudo_random_string(int length) {
     char rand_string[length + 1];
@@ -645,7 +618,7 @@ std::string Testdriver::generate_pseudo_random_string(int length) {
 
 /**
  * Generiert einen pseudo-random int. Bereich: 0 bis RAND_MAX
- * @return rand_int
+ * @return rand_int (int)
  */
 int Testdriver::generate_pseudo_random_int() {
     return static_cast<int>(rand());
@@ -653,7 +626,7 @@ int Testdriver::generate_pseudo_random_int() {
 
 /**
  * Generiert einen pseudo-random float. Bereich: 1 bis RAND_MAX / 14 + 1
- * @return rand_float
+ * @return rand_float (float)
  */
 float Testdriver::generate_pseudo_random_float() {
     return static_cast<float>(rand()) / 14.0f + 1.0f; // generate at least 1.0 for testing reasons
@@ -661,7 +634,7 @@ float Testdriver::generate_pseudo_random_float() {
 
 /**
  * Generiert einen pseudo-random double. Bereich: 0 bis RAND_MAX / 13
- * @return rand_double
+ * @return rand_double (double)
  */
 double Testdriver::generate_pseudo_random_double() {
     return static_cast<double>(rand()) / 13.0;
