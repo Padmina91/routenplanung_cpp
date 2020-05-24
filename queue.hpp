@@ -138,7 +138,8 @@ int Queue<T>::search_value(T val, int start_index) {
     int right_child_index = index_of_right_child(start_index);
     bool left_child_exists = _next > left_child_index;
     bool right_child_exists = _next > right_child_index;
-    if (val == _entries[start_index].get_value()) {
+    T current_val = _entries[start_index].get_value();
+    if (val == current_val) {
         return start_index;
     }
     if (left_child_exists) {
@@ -307,8 +308,9 @@ void Queue<T>::remove(T val) {
     int index = search_value(val, 0);
     if (index != -1) {
         remove_entry_at(index);
+    } else {
+        throw ValueNotFoundException();
     }
-    throw ValueNotFoundException();
 }
 
 template <typename T>

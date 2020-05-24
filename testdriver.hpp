@@ -38,49 +38,49 @@ private:
     void insert_doubles_to_queue(Queue<T>& queue, int number_of_inserts);
     
     template <typename T>
-    void test01(const std::string& type_name) const;
+    void test01(const std::string& type_name);
     
     template <typename T>
-    void test02(const std::string& type_name) const;
+    void test02(const std::string& type_name);
     
     template <typename T>
-    void test03(const std::string& type_name) const;
+    void test03(const std::string& type_name);
     
     template <typename T>
-    void test04(const std::string& type_name) const;
+    void test04(const std::string& type_name);
     
     template <typename T>
-    void test05(const std::string& type_name) const;
+    void test05(const std::string& type_name);
     
     template <typename T>
-    void test06(const std::string& type_name) const;
+    void test06(const std::string& type_name);
     
     template <typename T>
-    void test07(const std::string& type_name) const;
+    void test07(const std::string& type_name);
     
     template <typename T>
-    void test08(const std::string& type_name) const;
+    void test08(const std::string& type_name);
     
     template <typename T>
-    void test09(const std::string& type_name) const;
+    void test09(const std::string& type_name);
     
     template <typename T>
-    void test10(const std::string& type_name) const;
+    void test10(const std::string& type_name);
     
     template <typename T>
-    void test11(const std::string& type_name) const;
+    void test11(const std::string& type_name);
     
     template <typename T>
-    void test12(const std::string& type_name) const;
+    void test12(const std::string& type_name);
     
     template <typename T>
-    void test13(const std::string& type_name) const;
+    void test13(const std::string& type_name);
     
     template <typename T>
-    void test14(const std::string& type_name) const;
+    void test14(const std::string& type_name);
     
     template <typename T>
-    void execute_all_tests(const std::string& type_name) const;
+    void execute_all_tests(const std::string& type_name);
     
     template <typename T>
     void test_cleanup(const std::string& type_name) const;
@@ -121,7 +121,7 @@ void Testdriver::print_success_message(bool test_successful, int test_number, co
 }
 
 std::string Testdriver::generate_pseudo_random_string(int length) {
-    std::string s;
+    char s[length+1];
     static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     
     for (int i = 0; i < length; ++i) {
@@ -173,7 +173,7 @@ void Testdriver::insert_doubles_to_queue(Queue<T>& queue, int number_of_inserts)
 }
 
 template <typename T>
-void Testdriver::test01(const std::string& type_name) const {
+void Testdriver::test01(const std::string& type_name) {
     bool test_successful = false;
     Queue<T> test_queue01;
     try {
@@ -191,7 +191,7 @@ void Testdriver::test01(const std::string& type_name) const {
  * @param type_name
  */
 template <typename T>
-void Testdriver::test02(const std::string& type_name) const {
+void Testdriver::test02(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
         Queue<std::string> test_queue_02_1;
@@ -240,7 +240,7 @@ void Testdriver::test02(const std::string& type_name) const {
  * @param type_name
  */
 template <typename T>
-void Testdriver::test03(const std::string& type_name) const {
+void Testdriver::test03(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
         Queue<std::string> test_queue_03_1;
@@ -288,7 +288,7 @@ void Testdriver::test03(const std::string& type_name) const {
  * @param type_name
  */
 template <typename T>
-void Testdriver::test04(const std::string& type_name) const {
+void Testdriver::test04(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
         Queue<std::string> test_queue_04_1;
@@ -328,17 +328,24 @@ void Testdriver::test04(const std::string& type_name) const {
  * @param type_name
  */
 template <typename T>
-void Testdriver::test05(const std::string& type_name) const {
+void Testdriver::test05(const std::string& type_name) {
     bool test_successful = false;
     if (type_name == "string") {
         Queue<std::string> test_queue05_1;
         insert_strings_to_queue(test_queue05_1, 50);
+        test_successful = test_min_heap_correctness(test_queue05_1, 0);
     } else if (type_name == "int") {
         Queue<int> test_queue05_2;
+        insert_ints_to_queue(test_queue05_2, 50);
+        test_successful = test_min_heap_correctness(test_queue05_2, 0);
     } else if (type_name == "float") {
         Queue<float> test_queue05_3;
+        insert_floats_to_queue(test_queue05_3, 50);
+        test_successful = test_min_heap_correctness(test_queue05_3, 0);
     } else {
         Queue<double> test_queue05_4;
+        insert_doubles_to_queue(test_queue05_4, 50);
+        test_successful = test_min_heap_correctness(test_queue05_4, 0);
     }
     print_success_message(test_successful, 5, type_name);
 }
@@ -349,70 +356,171 @@ void Testdriver::test05(const std::string& type_name) const {
  * @param type_name
  */
 template <typename T>
-void Testdriver::test06(const std::string& type_name) const {
+void Testdriver::test06(const std::string& type_name) {
     bool test_successful = false;
-    
+    if (type_name == "string") {
+        Queue<std::string> test_queue06_1;
+        insert_strings_to_queue(test_queue06_1, 401);
+        test_successful = Entry<std::string>::num_of_entries_alive == 800;
+    } else if (type_name == "int") {
+        Queue<int> test_queue06_2;
+        insert_ints_to_queue(test_queue06_2, 401);
+        test_successful = Entry<int>::num_of_entries_alive == 800;
+    } else if (type_name == "float") {
+        Queue<float> test_queue06_3;
+        insert_floats_to_queue(test_queue06_3, 401);
+        test_successful = Entry<float>::num_of_entries_alive == 800;
+    } else {
+        Queue<double> test_queue06_4;
+        insert_doubles_to_queue(test_queue06_4, 401);
+        test_successful = Entry<double>::num_of_entries_alive == 800;
+    }
     print_success_message(test_successful, 6, type_name);
 }
 
+/**
+ * Testet, ob die Methode extract_min() wie erwartet das Element
+ * mit der kleinsten Priorität liefert, den Heap um eins
+ * verkleinert und anschließend richtig sortiert.
+ * @tparam T
+ * @param type_name
+ */
 template <typename T>
-void Testdriver::test07(const std::string& type_name) const {
+void Testdriver::test07(const std::string& type_name) {
     bool test_successful = false;
-    
+    if (type_name == "string") {
+        Queue<std::string> test_queue07_1;
+        insert_strings_to_queue(test_queue07_1, 99);
+        std::string expected_result = test_queue07_1.get_entry_at(0).get_value();
+        std::string result = test_queue07_1.extract_min();
+        test_successful = expected_result == result && test_min_heap_correctness(test_queue07_1, 0) && test_queue07_1.get_next() == 98;
+    } else if (type_name == "int") {
+        Queue<int> test_queue07_2;
+        insert_ints_to_queue(test_queue07_2, 99);
+        int expected_result = test_queue07_2.get_entry_at(0).get_value();
+        int result = test_queue07_2.extract_min();
+        test_successful = expected_result == result && test_min_heap_correctness(test_queue07_2, 0) && test_queue07_2.get_next() == 98;
+    } else if (type_name == "float") {
+        Queue<float> test_queue07_3;
+        insert_floats_to_queue(test_queue07_3, 99);
+        float expected_result = test_queue07_3.get_entry_at(0).get_value();
+        float result = test_queue07_3.extract_min();
+        test_successful = expected_result == result && test_min_heap_correctness(test_queue07_3, 0) && test_queue07_3.get_next() == 98;
+    } else {
+        Queue<double> test_queue07_4;
+        insert_doubles_to_queue(test_queue07_4, 99);
+        double expected_result = test_queue07_4.get_entry_at(0).get_value();
+        double result = test_queue07_4.extract_min();
+        test_successful = expected_result == result && test_min_heap_correctness(test_queue07_4, 0) && test_queue07_4.get_next() == 98;
+    }
     print_success_message(test_successful, 7, type_name);
 }
 
+
+/**
+ * Testet, ob die Methode remove() das gesuchte Element entfernt, egal wo es sich befindet.
+ * @tparam T
+ * @param type_name
+ */
 template <typename T>
-void Testdriver::test08(const std::string& type_name) const {
+void Testdriver::test08(const std::string& type_name) {
     bool test_successful = false;
-    
+    if (type_name == "string") {
+        Queue<std::string> test_queue08_1;
+        insert_strings_to_queue(test_queue08_1, 200);
+        std::string string_to_insert = generate_pseudo_random_string(20);
+        float prio_to_insert = generate_pseudo_random_float();
+        test_queue08_1.insert(string_to_insert, prio_to_insert);
+        test_queue08_1.remove(string_to_insert);
+        try {
+            test_queue08_1.remove(string_to_insert);
+        } catch (ValueNotFoundException&) {
+            test_successful = true;
+        }
+    } else if (type_name == "int") {
+        Queue<int> test_queue08_2;
+        insert_ints_to_queue(test_queue08_2, 200);
+        int int_to_insert = RAND_MAX + 3; // generate number that is unique in queue
+        float prio_to_insert = generate_pseudo_random_float();
+        test_queue08_2.insert(int_to_insert, prio_to_insert);
+        test_queue08_2.remove(int_to_insert);
+        try {
+            test_queue08_2.remove(int_to_insert);
+        } catch (ValueNotFoundException&) {
+            test_successful = true;
+        }
+    } else if (type_name == "float") {
+        Queue<float> test_queue08_3;
+        insert_floats_to_queue(test_queue08_3, 200);
+        float float_to_insert = RAND_MAX * 2.1; // generate number that is unique in queue
+        float prio_to_insert = generate_pseudo_random_float();
+        test_queue08_3.insert(float_to_insert, prio_to_insert);
+        test_queue08_3.remove(float_to_insert);
+        try {
+            test_queue08_3.remove(float_to_insert);
+        } catch (ValueNotFoundException&) {
+            test_successful = true;
+        }
+    } else {
+        Queue<double> test_queue08_4;
+        insert_doubles_to_queue(test_queue08_4, 200);
+        double double_to_insert = RAND_MAX * 2.1; // generate number that is unique in queue
+        float prio_to_insert = generate_pseudo_random_float();
+        test_queue08_4.insert(double_to_insert, prio_to_insert);
+        test_queue08_4.remove(double_to_insert);
+        try {
+            test_queue08_4.remove(double_to_insert);
+        } catch (ValueNotFoundException&) {
+            test_successful = true;
+        }
+    }
     print_success_message(test_successful, 8, type_name);
 }
 
 template <typename T>
-void Testdriver::test09(const std::string& type_name) const {
+void Testdriver::test09(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 9, type_name);
 }
 
 template <typename T>
-void Testdriver::test10(const std::string& type_name) const {
+void Testdriver::test10(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 10, type_name);
 }
 
 template <typename T>
-void Testdriver::test11(const std::string& type_name) const {
+void Testdriver::test11(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 11, type_name);
 }
 
 template <typename T>
-void Testdriver::test12(const std::string& type_name) const {
+void Testdriver::test12(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 12, type_name);
 }
 
 template <typename T>
-void Testdriver::test13(const std::string& type_name) const {
+void Testdriver::test13(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 13, type_name);
 }
 
 template <typename T>
-void Testdriver::test14(const std::string& type_name) const {
+void Testdriver::test14(const std::string& type_name) {
     bool test_successful = false;
     
     print_success_message(test_successful, 14, type_name);
 }
 
 template <typename T>
-void Testdriver::execute_all_tests(const std::string& type_name) const {
+void Testdriver::execute_all_tests(const std::string& type_name) {
     test01<T>(type_name);
     test02<T>(type_name);
     test03<T>(type_name);
